@@ -1,18 +1,41 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function HomeScreen() {
+export default function EmailScreen(props) {
+  const navigateToPasswordScreen = () => {
+    props.navigation.navigate("Password");
+  };
+
   return (
     <View style={styles.container}>
-      <Text>EmailScreen</Text>
+      <View>
+        <Text>EmailScreen</Text>
+      </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={navigateToPasswordScreen}
+      >
+        <Text style={styles.buttonText}>Continue</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
     flex: 1,
     justifyContent: "center",
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#494E58",
+    borderRadius: 50,
+    justifyContent: "center",
+    height: 50,
+    marginHorizontal: 80,
+  },
+  buttonText: {
+    color: "#fefefe",
+    fontWeight: "500",
   },
 });
