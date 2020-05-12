@@ -3,6 +3,10 @@ import { createStackNavigator } from "react-navigation-stack";
 import LoadingScreen from "../screens/LoadingScreen";
 import LoginScreen from "../screens/LoginScreen";
 import HomeScreen from "../screens/HomeScreen";
+import NameScreen from "../screens/NameScreen";
+import EmailScreen from "../screens/EmailScreen";
+import PasswordScreen from "../screens/PasswordScreen";
+import LocationScreen from "../screens/LocationScreen";
 
 const AppContainer = createStackNavigator({
   Home: HomeScreen,
@@ -10,6 +14,10 @@ const AppContainer = createStackNavigator({
 
 const AuthStack = createStackNavigator({
   Login: LoginScreen,
+  Name: NameScreen,
+  Email: EmailScreen,
+  Password: PasswordScreen,
+  Location: LocationScreen,
 });
 
 export default createAppContainer(
