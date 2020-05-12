@@ -6,11 +6,16 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { setEmail } from "./../redux/actions/user";
 
 export default function EmailScreen(props) {
-  const [email, setEmail] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const dispatch = useDispatch();
+
   const navigateToPasswordScreen = () => {
     props.navigation.navigate("Password");
+    dispatch(setEmail(userEmail));
   };
 
   return (
@@ -21,8 +26,8 @@ export default function EmailScreen(props) {
           <TextInput
             style={styles.input}
             autoCapitalize="none"
-            onChangeText={(email) => setEmail(email)}
-            value={email}
+            onChangeText={(userEmail) => setUserEmail(userEmail)}
+            value={userEmail}
             autoCorrect={false}
           ></TextInput>
         </View>
