@@ -1,15 +1,31 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 
 export default function PasswordScreen(props) {
+  const [password, setPassword] = useState("");
   const navigateToLocationScreen = () => {
     props.navigation.navigate("Location");
   };
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text>PasswordScreen</Text>
+      <Text>My password is</Text>
+      <View style={styles.form}>
+        <View>
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            onChangeText={(password) => setPassword(password)}
+            value={password}
+            autoCorrect={false}
+          ></TextInput>
+        </View>
       </View>
       <TouchableOpacity
         style={styles.button}
@@ -24,7 +40,18 @@ export default function PasswordScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+  },
+  form: {
+    marginBottom: 40,
+    marginHorizontal: 30,
+    marginTop: 250,
+  },
+  input: {
+    borderColor: "#8A8F9E",
+    borderRadius: 15,
+    borderWidth: StyleSheet.hairlineWidth,
+    fontSize: 15,
+    height: 40,
   },
   button: {
     alignItems: "center",
