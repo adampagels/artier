@@ -6,11 +6,16 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { setPassword } from "./../redux/actions/user";
 
 export default function PasswordScreen(props) {
-  const [password, setPassword] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const dispatch = useDispatch();
+
   const navigateToLocationScreen = () => {
     props.navigation.navigate("Location");
+    dispatch(setPassword(userPassword));
   };
 
   return (
@@ -21,8 +26,8 @@ export default function PasswordScreen(props) {
           <TextInput
             style={styles.input}
             autoCapitalize="none"
-            onChangeText={(password) => setPassword(password)}
-            value={password}
+            onChangeText={(userPassword) => setUserPassword(userPassword)}
+            value={userPassword}
             autoCorrect={false}
           ></TextInput>
         </View>
