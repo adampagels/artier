@@ -6,17 +6,21 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { setUsername } from "./../redux/actions/user";
 
 export default function NameScreen(props) {
   const [name, setName] = useState("");
+  const dispatch = useDispatch();
 
   const navigateToEmailScreen = () => {
     props.navigation.navigate("Email");
+    dispatch(setUsername(name));
   };
 
   return (
     <View style={styles.container}>
-      <Text>My first name is</Text>
+      <Text>My first first name is</Text>
       <View style={styles.form}>
         <View>
           <TextInput
