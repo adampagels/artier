@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
+import { useDispatch, useSelector } from "react-redux";
+import { setLocation } from "./../redux/actions/user";
 
 export default function LocationScreen() {
-  const [location, setLocation] = useState("");
+  const dispatch = useDispatch();
+  const location = useSelector((state) => state.location);
 
   const getLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -12,7 +15,7 @@ export default function LocationScreen() {
       let result = await Location.getCurrentPositionAsync({});
 
       if (result) {
-        setLocation(result);
+        dispatch(setLocation(result));
       }
     }
   };
