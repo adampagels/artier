@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { useDispatch, useSelector } from "react-redux";
-import { setLocation } from "./../redux/actions/user";
+import { setLocation, registerUser } from "./../redux/actions/user";
 
 export default function LocationScreen() {
   const dispatch = useDispatch();
@@ -34,6 +34,7 @@ export default function LocationScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           style={location ? styles.button : styles.locationNotAllowedButton}
+          onPress={() => dispatch(registerUser())}
         >
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
