@@ -7,6 +7,7 @@ export const SET_PASSWORD = "SET_PASSWORD";
 export const SET_LOCATION = "SET_LOCATION";
 export const ADD_USER_LOCATION = "ADD_USER_LOCATION";
 export const REGISTER_USER = "REGISTER_USER";
+export const LOGIN_USER = "LOGIN_USER";
 
 export const setUsername = (user) => {
   return {
@@ -67,6 +68,20 @@ export const addUserLocation = () => {
       })
       .then(() => {
         dispatch({ type: "ADD_USER_LOCATION" });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
+
+export const loginUser = (email, password) => {
+  return function (dispatch) {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        dispatch({ type: "LOGIN_USER" });
       })
       .catch((error) => {
         console.log(error);

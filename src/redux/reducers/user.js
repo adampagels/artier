@@ -5,6 +5,7 @@ import {
   SET_LOCATION,
   ADD_USER_LOCATION,
   REGISTER_USER,
+  LOGIN_USER,
 } from "../actions/user";
 
 const initialState = {
@@ -27,6 +28,8 @@ const userReducer = (state = initialState, action) => {
     case ADD_USER_LOCATION:
       return state;
     case REGISTER_USER:
+      return state;
+    case LOGIN_USER:
       return state;
     default:
       return state;
