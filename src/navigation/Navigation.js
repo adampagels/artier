@@ -1,5 +1,7 @@
+import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
+import { createBottomTabNavigator } from "react-navigation-tabs";
 import LoadingScreen from "../screens/LoadingScreen";
 import LoginScreen from "../screens/LoginScreen";
 import HomeScreen from "../screens/HomeScreen";
@@ -9,12 +11,55 @@ import PasswordScreen from "../screens/PasswordScreen";
 import LocationScreen from "../screens/LocationScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import NotificationScreen from "../screens/NotificationScreen";
+import AddPhotoScreen from "../screens/AddPhotoScreen";
+import { Ionicons } from "@expo/vector-icons";
 
-const AppContainer = createStackNavigator({
-  Home: HomeScreen,
-  Profile: ProfileScreen,
-  Notification: NotificationScreen,
-});
+const AppContainer = createStackNavigator(
+  {
+    default: createBottomTabNavigator(
+      {
+        Home: {
+          screen: HomeScreen,
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => (
+              <Ionicons name="ios-home" size={24} color={tintColor} />
+            ),
+          },
+        },
+        Notification: {
+          screen: NotificationScreen,
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => (
+              <Ionicons name="ios-notifications" size={24} color={tintColor} />
+            ),
+          },
+        },
+        Profile: {
+          screen: ProfileScreen,
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => (
+              <Ionicons name="ios-person" size={24} color={tintColor} />
+            ),
+          },
+        },
+      },
+      {
+        tabBarOptions: {
+          activeTintColor: "#161F3D",
+          inactiveTintColor: "#B8BBC4",
+          showLabel: true,
+        },
+      }
+    ),
+    addPhotoModal: {
+      screen: AddPhotoScreen,
+    },
+  },
+  {
+    mode: "modal",
+    headerMode: "none",
+  }
+);
 
 const AuthStack = createStackNavigator({
   Login: LoginScreen,
