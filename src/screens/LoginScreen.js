@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,11 +6,14 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { setEmail, setPassword } from "./../redux/actions/user";
-import { useSelector } from "react-redux";
+import { loginUser } from "./../redux/actions/user";
+import { useDispatch } from "react-redux";
 
 export default function LoginScreen(props) {
-  const { email, password } = useSelector((state) => state);
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+
+  const dispatch = useDispatch();
 
   const navigateToNameScreen = () => {
     props.navigation.navigate("Name");
@@ -25,22 +28,28 @@ export default function LoginScreen(props) {
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              onChangeText={(email) => setEmail(email)}
-              value={email}
+              onChangeText={(userEmail) => setUserEmail(userEmail)}
+              value={userEmail}
               autoCorrect={false}
             ></TextInput>
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              onChangeText={(password) => setPassword(password)}
-              value={password}
+              onChangeText={(userPassword) => setUserPassword(userPassword)}
+              value={userPassword}
               autoCorrect={false}
             ></TextInput>
           </View>
         </View>
       </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => dispatch(loginUser(userEmail, userPassword))}
+      >
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={navigateToNameScreen}>
-        <Text style={styles.buttonText}>Register</Text>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
@@ -67,8 +76,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#494E58",
     borderRadius: 50,
-    height: 50,
     justifyContent: "center",
+    height: 50,
+    marginBottom: 30,
     marginHorizontal: 80,
   },
   buttonText: {
