@@ -11,7 +11,7 @@ import PasswordScreen from "../screens/PasswordScreen";
 import LocationScreen from "../screens/LocationScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import NotificationScreen from "../screens/NotificationScreen";
-import AddPhotoScreen from "../screens/AddPhotoScreen";
+import AddArtScreen from "../screens/AddArtScreen";
 import { Ionicons } from "@expo/vector-icons";
 
 const AppContainer = createStackNavigator(
@@ -51,8 +51,8 @@ const AppContainer = createStackNavigator(
         },
       }
     ),
-    addPhotoModal: {
-      screen: AddPhotoScreen,
+    addArtModal: {
+      screen: AddArtScreen,
     },
   },
   {
