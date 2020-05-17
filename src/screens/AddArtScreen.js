@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,8 +15,17 @@ import "firebase/firestore";
 import * as firebase from "firebase/app";
 
 export default function AddArtScreen() {
-  const [image, setImage] = useState("");
-  const uploadedArt = [{}, {}, {}, {}];
+  const [image, setImage] = useState([]);
+  const uploadedArt = [
+    { uri: image[0] && image[0].data.image.uri },
+    { uri: image[1] && image[1].data.image.uri },
+    { uri: image[2] && image[2].data.image.uri },
+    { uri: image[3] && image[3].data.image.uri },
+  ];
+
+  useEffect(() => {
+    fetchUserArt();
+  }, [image]);
 
   const pickImage = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -40,6 +49,25 @@ export default function AddArtScreen() {
     }
   };
 
+  const fetchUserArt = () => {
+    let artData = [];
+    let userId = (firebase.auth().currentUser || {}).uid;
+    firebase
+      .firestore()
+      .collection("art")
+      .where("uid", "==", userId)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          artData.push({ data: doc.data(), id: doc.id });
+        });
+        setImage(artData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const uploadImage = async (uri) => {
     try {
       const blob = await new Promise((resolve, reject) => {
@@ -47,8 +75,8 @@ export default function AddArtScreen() {
         xhr.onload = function () {
           resolve(xhr.response);
         };
-        xhr.onerror = function (e) {
-          console.log(e);
+        xhr.onerror = function (error) {
+          console.log(error);
           reject(new TypeError("Network request failed"));
         };
         xhr.responseType = "blob";
@@ -80,7 +108,7 @@ export default function AddArtScreen() {
         renderItem={({ item }) => (
           <View style={styles.listItem}>
             <ImageBackground
-              source={{ uri: image.uri }}
+              source={{ uri: item.uri }}
               style={styles.background}
               imageStyle={{ borderRadius: 25 }}
             >
