@@ -42,10 +42,13 @@ export const registerUser = () => {
     const state = getState();
     firebase
       .auth()
-      .createUserWithEmailAndPassword(state.email, state.password)
+      .createUserWithEmailAndPassword(
+        state.userReducer.email,
+        state.userReducer.password
+      )
       .then((userCredentials) => {
         userCredentials.user.updateProfile({
-          displayName: state.user,
+          displayName: state.userReducer.user,
         });
         dispatch({ type: "REGISTER_USER" });
         dispatch(addUserLocation());
@@ -63,8 +66,8 @@ export const addUserLocation = () => {
       .firestore()
       .collection("users")
       .add({
-        email: state.email,
-        location: state.location,
+        email: state.userReducer.email,
+        location: state.userReducer.location,
       })
       .then(() => {
         dispatch({ type: "ADD_USER_LOCATION" });
