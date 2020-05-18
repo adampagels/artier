@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import Navigation from "./src/navigation/Navigation";
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
-import userReducer from "./src/redux/reducers/user";
+import rootReducer from "./src/redux/reducers/index";
 
 //Fix "can't find variable: Crypto" error
 import { decode, encode } from "base-64";
@@ -27,7 +27,7 @@ if (!firebase.apps.length) {
 }
 
 export default function App() {
-  const store = createStore(userReducer, applyMiddleware(thunkMiddleware));
+  const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
   return (
     <Provider store={store}>
       <Navigation />
