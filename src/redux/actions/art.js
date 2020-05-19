@@ -11,13 +11,13 @@ export const fetchAllArt = () => {
     firebase
       .firestore()
       .collection("art")
-      .where("uid", "==", userId)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
           artData.push({ data: doc.data(), id: doc.id });
         });
-        dispatch({ type: "FETCH_ALL_ART", payload: artData });
+        let otherUsersArt = artData.filter((art) => art.data.uid !== userId);
+        dispatch({ type: "FETCH_ALL_ART", payload: otherUsersArt });
       })
       .catch((error) => {
         console.log(error);
