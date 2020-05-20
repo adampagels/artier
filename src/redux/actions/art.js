@@ -7,7 +7,8 @@ export const LIKE_ART = "LIKE_ART";
 export const fetchAllArt = () => {
   return function (dispatch) {
     let artData = [];
-    let userId = (firebase.auth().currentUser || {}).uid;
+    const { uid } = firebase.auth().currentUser;
+    const uidForFilter = "uid" + uid;
     firebase
       .firestore()
       .collection("art")
@@ -16,7 +17,9 @@ export const fetchAllArt = () => {
         snapshot.forEach((doc) => {
           artData.push({ data: doc.data(), id: doc.id });
         });
-        let otherUsersArt = artData.filter((art) => art.data.uid !== userId);
+        const otherUsersArt = artData.filter(
+          (art) => art.data.likes[uidForFilter] !== uid && art.data.uid !== uid
+        );
         dispatch({ type: "FETCH_ALL_ART", payload: otherUsersArt });
       })
       .catch((error) => {
@@ -32,10 +35,8 @@ export const likeArt = (artId, user, userId) => {
       .collection("art")
       .doc(artId)
       .update({
-        likes: firebase.firestore.FieldValue.arrayUnion({
-          user: user,
-          userId: userId,
-        }),
+        ["likes." + user + userId]: user,
+        ["likes." + "uid" + userId]: userId,
       })
       .then(() => {
         dispatch({ type: "LIKE_ART" });
