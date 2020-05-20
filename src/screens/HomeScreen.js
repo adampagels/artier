@@ -1,20 +1,23 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Image, ImageBackground } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllArt } from "./../redux/actions/art";
+import { fetchAllArt, likeArt, dislikeArt } from "./../redux/actions/art";
 import * as firebase from "firebase/app";
+import "firebase/firestore";
 import Swiper from "react-native-deck-swiper";
 import Card from "../components/Card";
 
-export default function HomeScreen() {
+export default function HomeScreen(props) {
   const dispatch = useDispatch();
   const art = useSelector((state) => state.artReducer.allArt);
+  const { uid, displayName } = firebase.auth().currentUser;
 
   const logOutUser = () => {
     firebase.auth().signOut();
   };
 
   useEffect(() => {
+    props.navigation.navigate("addArtModal");
     dispatch(fetchAllArt());
   }, []);
 
@@ -23,8 +26,11 @@ export default function HomeScreen() {
       <Swiper
         cards={art}
         renderCard={(card) => <Card card={card} />}
-        onSwiped={(cardIndex) => {
-          console.log(cardIndex);
+        onSwipedRight={(card) => {
+          dispatch(likeArt(art[card].id, displayName, uid));
+        }}
+        onSwipedLeft={(card) => {
+          dispatch(dislikeArt(art[card].id, displayName, uid));
         }}
         onSwipedAll={() => {
           console.log("onSwipedAll");
