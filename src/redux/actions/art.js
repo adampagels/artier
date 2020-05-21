@@ -3,6 +3,7 @@ import * as firebase from "firebase/app";
 
 export const FETCH_ALL_ART = "FETCH_ALL_ART";
 export const LIKE_ART = "LIKE_ART";
+export const DISLIKE_ART = "DISLIKE_ART";
 
 export const fetchAllArt = () => {
   return function (dispatch) {
@@ -18,8 +19,12 @@ export const fetchAllArt = () => {
           artData.push({ data: doc.data(), id: doc.id });
         });
         const otherUsersArt = artData.filter(
-          (art) => art.data.likes[uidForFilter] !== uid && art.data.uid !== uid
+          (art) =>
+            art.data.likes[uidForFilter] !== uid &&
+            art.data.dislikes[uidForFilter] !== uid &&
+            art.data.uid !== uid
         );
+        console.log(otherUsersArt)
         dispatch({ type: "FETCH_ALL_ART", payload: otherUsersArt });
       })
       .catch((error) => {
@@ -40,6 +45,25 @@ export const likeArt = (artId, user, userId) => {
       })
       .then(() => {
         dispatch({ type: "LIKE_ART" });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
+
+export const dislikeArt = (artId, user, userId) => {
+  return function (dispatch) {
+    firebase
+      .firestore()
+      .collection("art")
+      .doc(artId)
+      .update({
+        ["dislikes." + user + userId]: user,
+        ["dislikes." + "uid" + userId]: userId,
+      })
+      .then(() => {
+        dispatch({ type: "DISLIKE_ART" });
       })
       .catch((error) => {
         console.log(error);
