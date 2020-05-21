@@ -13,19 +13,31 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import "firebase/firestore";
 import * as firebase from "firebase/app";
+import { fetchUserArt } from "./../redux/actions/art";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AddArtScreen() {
   const [image, setImage] = useState([]);
+  const dispatch = useDispatch();
+  const userArt = useSelector((state) => state.artReducer.userArt);
   const uploadedArt = [
-    { uri: image[0] && image[0].data.image.uri },
-    { uri: image[1] && image[1].data.image.uri },
-    { uri: image[2] && image[2].data.image.uri },
-    { uri: image[3] && image[3].data.image.uri },
+    { uri: userArt[0] && userArt[0].data.image.uri },
+    { uri: userArt[1] && userArt[1].data.image.uri },
+    { uri: userArt[2] && userArt[2].data.image.uri },
+    { uri: userArt[3] && userArt[3].data.image.uri },
   ];
 
   useEffect(() => {
-    fetchUserArt();
-  }, [image]);
+    const { uid } = firebase.auth().currentUser;
+    const unsubscribe = firebase
+      .firestore()
+      .collection("art")
+      .where("uid", "==", uid)
+      .onSnapshot(() => {
+        dispatch(fetchUserArt());
+      });
+    return () => unsubscribe();
+  }, []);
 
   const pickImage = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -36,7 +48,6 @@ export default function AddArtScreen() {
       }).catch((error) => console.log(error));
 
       if (!result.cancelled) {
-        setImage(result);
         firebase
           .firestore()
           .collection("art")
@@ -48,25 +59,6 @@ export default function AddArtScreen() {
           });
       }
     }
-  };
-
-  const fetchUserArt = () => {
-    let artData = [];
-    let userId = (firebase.auth().currentUser || {}).uid;
-    firebase
-      .firestore()
-      .collection("art")
-      .where("uid", "==", userId)
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          artData.push({ data: doc.data(), id: doc.id });
-        });
-        setImage(artData);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   return (
