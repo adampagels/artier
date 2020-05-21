@@ -43,8 +43,9 @@ export default function AddArtScreen() {
           .add({
             image: result,
             uid: (firebase.auth().currentUser || {}).uid,
+            likes: {},
+            dislikes: {},
           });
-        return await uploadImage(result.uri);
       }
     }
   };
@@ -66,32 +67,6 @@ export default function AddArtScreen() {
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const uploadImage = async (uri) => {
-    try {
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-          resolve(xhr.response);
-        };
-        xhr.onerror = function (error) {
-          console.log(error);
-          reject(new TypeError("Network request failed"));
-        };
-        xhr.responseType = "blob";
-        xhr.open("GET", uri, true);
-        xhr.send(null);
-      });
-      //Create a unique file name for each image uploaded
-      let uriParts = uri.split("/");
-      let imageName = uriParts[uriParts.length - 1];
-      const ref = firebase.storage().ref().child(`${imageName}`);
-      const snapshot = await ref.put(blob);
-      blob.close();
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
