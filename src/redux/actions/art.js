@@ -9,8 +9,6 @@ export const FETCH_USER_ART = "FETCH_USER_ART";
 export const fetchAllArt = () => {
   return function (dispatch) {
     let artData = [];
-    const { uid, displayName } = firebase.auth().currentUser;
-    const displayNameAndUid = displayName + uid;
     firebase
       .firestore()
       .collection("art")
@@ -19,13 +17,7 @@ export const fetchAllArt = () => {
         snapshot.forEach((doc) => {
           artData.push({ data: doc.data(), id: doc.id });
         });
-        const otherUsersArt = artData.filter(
-          (art) =>
-            art.data.likes[displayNameAndUid] !== displayName &&
-            art.data.dislikes[displayNameAndUid] !== displayName &&
-            art.data.uid !== uid
-        );
-        dispatch({ type: "FETCH_ALL_ART", payload: otherUsersArt });
+        dispatch({ type: "FETCH_ALL_ART", payload: artData });
       })
       .catch((error) => {
         console.log(error);
