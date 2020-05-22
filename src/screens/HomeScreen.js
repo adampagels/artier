@@ -11,10 +11,18 @@ export default function HomeScreen(props) {
   const dispatch = useDispatch();
   const art = useSelector((state) => state.artReducer.allArt);
   const { uid, displayName } = firebase.auth().currentUser;
+  const displayNameAndUid = displayName + uid;
 
   const logOutUser = () => {
     firebase.auth().signOut();
   };
+
+  const otherUsersArt = art.filter(
+    (art) =>
+      art.data.likes[displayNameAndUid] !== displayName &&
+      art.data.dislikes[displayNameAndUid] !== displayName &&
+      art.data.uid !== uid
+  );
 
   useEffect(() => {
     props.navigation.navigate("addArtModal");
@@ -24,13 +32,13 @@ export default function HomeScreen(props) {
   return (
     <View style={styles.container}>
       <Swiper
-        cards={art}
+        cards={otherUsersArt}
         renderCard={(card) => <Card card={card} />}
         onSwipedRight={(card) => {
-          dispatch(likeArt(art[card].id, displayName, uid));
+          dispatch(likeArt(otherUsersArt[card].id, displayName, uid));
         }}
         onSwipedLeft={(card) => {
-          dispatch(dislikeArt(art[card].id, displayName, uid));
+          dispatch(dislikeArt(otherUsersArt[card].id, displayName, uid));
         }}
         onSwipedAll={() => {
           console.log("onSwipedAll");
