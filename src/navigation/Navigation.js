@@ -12,7 +12,8 @@ import LocationScreen from "../screens/LocationScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import AddArtScreen from "../screens/AddArtScreen";
-import { Ionicons } from "@expo/vector-icons";
+import MasterpiecesScreen from "../screens/MasterpiecesScreen";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 
 const AppContainer = createStackNavigator(
   {
@@ -26,11 +27,19 @@ const AppContainer = createStackNavigator(
             ),
           },
         },
-        Notification: {
+        Notifications: {
           screen: NotificationScreen,
           navigationOptions: {
             tabBarIcon: ({ tintColor }) => (
               <Ionicons name="ios-notifications" size={24} color={tintColor} />
+            ),
+          },
+        },
+        Masterpieces: {
+          screen: MasterpiecesScreen,
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => (
+              <Ionicons name="md-medal" size={24} color={tintColor} />
             ),
           },
         },
@@ -61,13 +70,18 @@ const AppContainer = createStackNavigator(
   }
 );
 
-const AuthStack = createStackNavigator({
-  Login: LoginScreen,
-  Name: NameScreen,
-  Email: EmailScreen,
-  Password: PasswordScreen,
-  Location: LocationScreen,
-});
+const AuthStack = createStackNavigator(
+  {
+    Login: LoginScreen,
+    Name: NameScreen,
+    Email: EmailScreen,
+    Password: PasswordScreen,
+    Location: LocationScreen,
+  },
+  {
+    headerMode: "none",
+  }
+);
 
 export default createAppContainer(
   createSwitchNavigator(
