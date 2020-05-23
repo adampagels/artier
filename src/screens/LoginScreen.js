@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Image,
 } from "react-native";
 import { loginUser } from "./../redux/actions/user";
 import { useDispatch } from "react-redux";
@@ -21,8 +22,12 @@ export default function LoginScreen(props) {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require("../assets/loginBG.jpg")}
+        style={styles.background}
+      />
       <View>
-        <Text>LoginScreen</Text>
+        <Text style={styles.loginTitle}>ARTiER</Text>
         <View style={styles.form}>
           <View>
             <TextInput
@@ -42,15 +47,20 @@ export default function LoginScreen(props) {
           </View>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => dispatch(loginUser(userEmail, userPassword))}
-      >
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={navigateToNameScreen}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => dispatch(loginUser(userEmail, userPassword))}
+        >
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.signUpButton}
+          onPress={navigateToNameScreen}
+        >
+          <Text style={styles.signUpButtonText}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -59,30 +69,97 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  background: {
+    height: "220%",
+    position: "absolute",
+    resizeMode: "contain",
+    top: -490,
+    width: "340%",
+  },
+  loginTitle: {
+    color: "#f6f6e9",
+    fontSize: 60,
+    marginTop: 60,
+    alignSelf: "center",
+    borderTopWidth: 3,
+    borderColor: "red",
+  },
   form: {
     marginBottom: 40,
     marginHorizontal: 30,
-    marginTop: 200,
+    marginTop: 80,
   },
   input: {
-    borderColor: "#8A8F9E",
+    backgroundColor: "#f6f6e9",
     borderRadius: 15,
-    borderWidth: StyleSheet.hairlineWidth,
+    color: "white",
     fontSize: 15,
     height: 40,
     marginTop: 20,
+    shadowColor: "#333",
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
   },
   button: {
     alignItems: "center",
-    backgroundColor: "#494E58",
-    borderRadius: 50,
+    backgroundColor: "#f6f6e9",
+    borderRadius: 1000,
     justifyContent: "center",
-    height: 50,
+    height: 20,
     marginBottom: 30,
-    marginHorizontal: 80,
+    marginRight: 30,
+    marginLeft: 30,
+    marginTop: 20,
+    width: 10,
+    padding: 55,
+    shadowColor: "#333",
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+  },
+  signUpButton: {
+    alignItems: "center",
+    borderRadius: 1000,
+    borderColor: "#f6f6e9",
+    borderWidth: 2,
+    justifyContent: "center",
+    height: 20,
+    marginBottom: 30,
+    marginRight: 30,
+    marginLeft: 30,
+    marginTop: 20,
+    width: 10,
+    padding: 55,
+    shadowColor: "#333",
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
   },
   buttonText: {
-    color: "#fefefe",
-    fontWeight: "500",
+    color: "#6F416D",
+    fontWeight: "bold",
+    fontSize: 16,
+    position: "absolute",
+  },
+  signUpButtonText: {
+    color: "#f6f6e9",
+    fontWeight: "bold",
+    fontSize: 16,
+    borderColor: "white",
+    position: "absolute",
   },
 });
