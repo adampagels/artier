@@ -5,12 +5,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Image,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { setUsername } from "./../redux/actions/user";
+import { AppLoading } from "expo";
+import { Asset } from "expo-asset";
 
 export default function NameScreen(props) {
   const [name, setName] = useState("");
+  const [isReady, setReady] = useState(false);
   const dispatch = useDispatch();
 
   const navigateToEmailScreen = () => {
@@ -18,9 +22,30 @@ export default function NameScreen(props) {
     dispatch(setUsername(name));
   };
 
+  const _cacheResourcesAsync = async () => {
+    const images = [require("../assets/nameBG.jpg")];
+
+    const cacheImages = images.map((image) => {
+      return Asset.fromModule(image).downloadAsync();
+    });
+    return Promise.all(cacheImages);
+  };
+
   return (
     <View style={styles.container}>
-      <Text>My first first name is</Text>
+      {isReady === false ? (
+        <AppLoading
+          startAsync={_cacheResourcesAsync}
+          onFinish={() => setReady(true)}
+          onError={console.warn}
+        />
+      ) : (
+        <Image
+          source={require("../assets/nameBG.jpg")}
+          style={styles.background}
+        />
+      )}
+      <Text style={styles.loginTitle}>My first{"\n"}name is</Text>
       <View style={styles.form}>
         <View>
           <TextInput
@@ -43,28 +68,65 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  background: {
+    height: "220%",
+    position: "absolute",
+    resizeMode: "contain",
+    top: -700,
+    width: "350%",
+  },
+  loginTitle: {
+    color: "#f6f6e9",
+    fontSize: 60,
+    marginTop: 60,
+    alignSelf: "flex-start",
+    borderTopWidth: 3,
+    borderColor: "red",
+    marginHorizontal: 30,
+  },
   form: {
     marginBottom: 40,
     marginHorizontal: 30,
-    marginTop: 250,
+    marginTop: 80,
   },
   input: {
-    borderColor: "#8A8F9E",
+    backgroundColor: "#f6f6e9",
     borderRadius: 15,
-    borderWidth: StyleSheet.hairlineWidth,
+    color: "white",
     fontSize: 15,
     height: 40,
+    marginTop: 20,
+    shadowColor: "#333",
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
   },
   button: {
+    alignSelf: "center",
     alignItems: "center",
-    backgroundColor: "#494E58",
-    borderRadius: 50,
+    backgroundColor: "#f6f6e9",
+    borderRadius: 1000,
     justifyContent: "center",
-    height: 50,
-    marginHorizontal: 80,
+    height: 20,
+    marginBottom: 30,
+    marginTop: 20,
+    width: 10,
+    padding: 55,
+    shadowColor: "#333",
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
   },
   buttonText: {
-    color: "#fefefe",
-    fontWeight: "500",
+    color: "#6F416D",
+    fontWeight: "bold",
+    fontSize: 16,
+    position: "absolute",
   },
 });
