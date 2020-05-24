@@ -13,7 +13,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import AddArtScreen from "../screens/AddArtScreen";
 import MasterpiecesScreen from "../screens/MasterpiecesScreen";
-import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 const AppContainer = createStackNavigator(
   {
