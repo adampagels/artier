@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -13,14 +13,15 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import "firebase/firestore";
 import * as firebase from "firebase/app";
-import { fetchUserArt } from "./../redux/actions/art";
+import { fetchAllArt } from "./../redux/actions/art";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function AddArtScreen() {
-  const [image, setImage] = useState([]);
   const dispatch = useDispatch();
-  const userArt = useSelector((state) => state.artReducer.userArt);
-  const uploadedArt = [
+  const art = useSelector((state) => state.artReducer.allArt);
+  const { uid } = firebase.auth().currentUser;
+  const userArt = art.filter((art) => art.data.uid === uid);
+  const userArtImages = [
     { uri: userArt[0] && userArt[0].data.image.uri },
     { uri: userArt[1] && userArt[1].data.image.uri },
     { uri: userArt[2] && userArt[2].data.image.uri },
@@ -34,7 +35,7 @@ export default function AddArtScreen() {
       .collection("art")
       .where("uid", "==", uid)
       .onSnapshot(() => {
-        dispatch(fetchUserArt());
+        dispatch(fetchAllArt());
       });
     return () => unsubscribe();
   }, []);
@@ -71,7 +72,7 @@ export default function AddArtScreen() {
         }}
         scrollEnabled={false}
         numColumns={2}
-        data={uploadedArt}
+        data={userArtImages}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
             <ImageBackground

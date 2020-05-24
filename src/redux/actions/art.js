@@ -4,7 +4,6 @@ import * as firebase from "firebase/app";
 export const FETCH_ALL_ART = "FETCH_ALL_ART";
 export const LIKE_ART = "LIKE_ART";
 export const DISLIKE_ART = "DISLIKE_ART";
-export const FETCH_USER_ART = "FETCH_USER_ART";
 
 export const fetchAllArt = () => {
   return function (dispatch) {
@@ -55,27 +54,6 @@ export const dislikeArt = (artId, user, userId) => {
       })
       .then(() => {
         dispatch({ type: "DISLIKE_ART" });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-};
-
-export const fetchUserArt = () => {
-  return function (dispatch) {
-    let userArtData = [];
-    const { uid } = firebase.auth().currentUser;
-    firebase
-      .firestore()
-      .collection("art")
-      .where("uid", "==", uid)
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          userArtData.push({ data: doc.data(), id: doc.id });
-        });
-        dispatch({ type: "FETCH_USER_ART", payload: userArtData });
       })
       .catch((error) => {
         console.log(error);
