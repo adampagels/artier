@@ -30,13 +30,6 @@ export const setPassword = (password) => {
   };
 };
 
-export const setLocation = (location) => {
-  return {
-    type: "SET_LOCATION",
-    payload: location,
-  };
-};
-
 export const registerUser = () => {
   return (dispatch, getState) => {
     const state = getState();
@@ -52,25 +45,6 @@ export const registerUser = () => {
         });
         dispatch({ type: "REGISTER_USER" });
         dispatch(addUserLocation());
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-};
-
-export const addUserLocation = () => {
-  return function (dispatch, getState) {
-    const state = getState();
-    firebase
-      .firestore()
-      .collection("users")
-      .add({
-        email: state.userReducer.email,
-        location: state.userReducer.location,
-      })
-      .then(() => {
-        dispatch({ type: "ADD_USER_LOCATION" });
       })
       .catch((error) => {
         console.log(error);
