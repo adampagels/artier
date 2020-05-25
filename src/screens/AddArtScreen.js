@@ -13,7 +13,7 @@ import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import "firebase/firestore";
 import * as firebase from "firebase/app";
-import { fetchAllArt } from "./../redux/actions/art";
+import { fetchAllArt, deleteArt } from "./../redux/actions/art";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function AddArtScreen() {
@@ -22,10 +22,22 @@ export default function AddArtScreen() {
   const { uid } = firebase.auth().currentUser;
   const userArt = art.filter((art) => art.data.uid === uid);
   const userArtImages = [
-    { uri: userArt[0] && userArt[0].data.image.uri },
-    { uri: userArt[1] && userArt[1].data.image.uri },
-    { uri: userArt[2] && userArt[2].data.image.uri },
-    { uri: userArt[3] && userArt[3].data.image.uri },
+    {
+      uri: userArt[0] && userArt[0].data.image.uri,
+      id: userArt[0] && userArt[0].id,
+    },
+    {
+      uri: userArt[1] && userArt[1].data.image.uri,
+      id: userArt[1] && userArt[1].id,
+    },
+    {
+      uri: userArt[2] && userArt[2].data.image.uri,
+      id: userArt[2] && userArt[2].id,
+    },
+    {
+      uri: userArt[3] && userArt[3].data.image.uri,
+      id: userArt[3] && userArt[3].id,
+    },
   ];
 
   useEffect(() => {
@@ -85,6 +97,7 @@ export default function AddArtScreen() {
                   name="md-remove-circle"
                   size={50}
                   color="red"
+                  onPress={() => dispatch(deleteArt(item.id))}
                   style={{
                     shadowColor: "#E9446A",
                     shadowOffset: {
@@ -104,7 +117,7 @@ export default function AddArtScreen() {
                   <Ionicons
                     name="ios-add-circle"
                     size={50}
-                    color={"red"}
+                    color="red"
                     onPress={() => pickImage()}
                     style={{
                       shadowColor: "#E9446A",
