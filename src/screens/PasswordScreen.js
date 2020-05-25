@@ -8,7 +8,7 @@ import {
   Image,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { setPassword } from "./../redux/actions/user";
+import { setPassword, registerUser } from "./../redux/actions/user";
 import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
 
@@ -17,9 +17,9 @@ export default function PasswordScreen(props) {
   const [isReady, setReady] = useState(false);
   const dispatch = useDispatch();
 
-  const navigateToLocationScreen = () => {
-    props.navigation.navigate("Location");
+  const setPasswordAndRegister = () => {
     dispatch(setPassword(userPassword));
+    dispatch(registerUser());
   };
 
   const _cacheResourcesAsync = async () => {
@@ -59,7 +59,7 @@ export default function PasswordScreen(props) {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={navigateToLocationScreen}
+        onPress={() => setPasswordAndRegister()}
       >
         <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>

@@ -8,7 +8,6 @@ import HomeScreen from "../screens/HomeScreen";
 import NameScreen from "../screens/NameScreen";
 import EmailScreen from "../screens/EmailScreen";
 import PasswordScreen from "../screens/PasswordScreen";
-import LocationScreen from "../screens/LocationScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import AddArtScreen from "../screens/AddArtScreen";
@@ -76,7 +75,6 @@ const AuthStack = createStackNavigator(
     Name: NameScreen,
     Email: EmailScreen,
     Password: PasswordScreen,
-    Location: LocationScreen,
   },
   {
     headerMode: "none",
