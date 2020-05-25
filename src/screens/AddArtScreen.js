@@ -80,12 +80,11 @@ export default function AddArtScreen() {
               style={styles.background}
               imageStyle={{ borderRadius: 25 }}
             >
-              <TouchableOpacity>
+              {item.uri ? (
                 <Ionicons
-                  name="ios-add-circle"
+                  name="md-remove-circle"
                   size={50}
-                  color={"red"}
-                  onPress={() => pickImage()}
+                  color="red"
                   style={{
                     shadowColor: "#E9446A",
                     shadowOffset: {
@@ -96,11 +95,33 @@ export default function AddArtScreen() {
                     },
                     position: "absolute",
                     right: -10,
-                    bottom: -217,
+                    bottom: -18,
                     backgroundColor: "white",
                   }}
                 />
-              </TouchableOpacity>
+              ) : (
+                <TouchableOpacity>
+                  <Ionicons
+                    name="ios-add-circle"
+                    size={50}
+                    color={"red"}
+                    onPress={() => pickImage()}
+                    style={{
+                      shadowColor: "#E9446A",
+                      shadowOffset: {
+                        width: 0,
+                        height: 0,
+                        shadowRadius: 10,
+                        shadowOpacity: 0.4,
+                      },
+                      position: "absolute",
+                      right: -10,
+                      bottom: -217,
+                      backgroundColor: "white",
+                    }}
+                  />
+                </TouchableOpacity>
+              )}
             </ImageBackground>
           </View>
         )}
