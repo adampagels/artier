@@ -15,12 +15,14 @@ import "firebase/firestore";
 import * as firebase from "firebase/app";
 import { fetchAllArt, deleteArt } from "./../redux/actions/art";
 import { useDispatch, useSelector } from "react-redux";
+import { useActionSheet } from "@expo/react-native-action-sheet";
 
 export default function AddArtScreen() {
   const dispatch = useDispatch();
   const art = useSelector((state) => state.artReducer.allArt);
   const { uid } = firebase.auth().currentUser;
   const userArt = art.filter((art) => art.data.uid === uid);
+  const { showActionSheetWithOptions } = useActionSheet();
   const userArtImages = [
     {
       uri: userArt[0] && userArt[0].data.image.uri,
@@ -97,6 +99,26 @@ export default function AddArtScreen() {
     }
   };
 
+  const onActionPress = () => {
+    const options = ["Choose From Library", "Take Picture", "Cancel"];
+    const cancelButtonIndex = options.length - 1;
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      async (buttonIndex) => {
+        switch (buttonIndex) {
+          case 0:
+            return pickImage();
+          case 1:
+            return takePhoto();
+          default:
+        }
+      }
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text>Add Art</Text>
@@ -141,7 +163,7 @@ export default function AddArtScreen() {
                     name="ios-add-circle"
                     size={50}
                     color="red"
-                    onPress={() => pickImage()}
+                    onPress={() => onActionPress()}
                     style={{
                       shadowColor: "#E9446A",
                       shadowOffset: {
