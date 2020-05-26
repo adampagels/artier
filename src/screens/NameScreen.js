@@ -92,10 +92,11 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "#f6f6e9",
     borderRadius: 15,
-    color: "white",
+    color: "#F95175",
     fontSize: 15,
     height: 40,
     marginTop: 20,
+    paddingLeft: 10,
     shadowColor: "#333",
     shadowOpacity: 0.5,
     shadowRadius: 3,
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     },
   },
   buttonText: {
-    color: "#6F416D",
+    color: "#F95175",
     fontWeight: "bold",
     fontSize: 16,
     position: "absolute",
