@@ -74,6 +74,29 @@ export default function AddArtScreen() {
     }
   };
 
+  const takePhoto = async () => {
+    const { status } = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL,
+      Permissions.CAMERA
+    );
+    if (status === "granted") {
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      }).catch((error) => console.log(error));
+      if (!result.cancelled) {
+        firebase
+          .firestore()
+          .collection("art")
+          .add({
+            image: result,
+            uid: (firebase.auth().currentUser || {}).uid,
+            likes: {},
+            dislikes: {},
+          });
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text>Add Art</Text>
