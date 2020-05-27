@@ -1,21 +1,18 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, StatusBar } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllArt, likeArt, dislikeArt } from "./../redux/actions/art";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import Swiper from "react-native-deck-swiper";
 import Card from "../components/Card";
+import IconButton from "../components/IconButton";
 
 export default function HomeScreen(props) {
   const dispatch = useDispatch();
   const art = useSelector((state) => state.artReducer.allArt);
   const { uid, displayName } = firebase.auth().currentUser;
   const displayNameAndUid = displayName + uid;
-
-  const logOutUser = () => {
-    firebase.auth().signOut();
-  };
 
   const otherUsersArt = art.filter(
     (art) =>
@@ -31,7 +28,11 @@ export default function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
       <Swiper
+        ref={(swiper) => {
+          swiper = swiper;
+        }}
         cards={otherUsersArt}
         renderCard={(card) => <Card card={card} />}
         onSwipedRight={(card) => {
@@ -44,11 +45,24 @@ export default function HomeScreen(props) {
           console.log("onSwipedAll");
         }}
         cardIndex={0}
-        backgroundColor={"red"}
+        backgroundColor={"#f6f6e9"}
         stackSize={3}
         verticalSwipe={false}
       ></Swiper>
-      <Text onPress={() => logOutUser()}>Logout</Text>
+      <View style={styles.buttonsContainer}>
+        <IconButton
+          name="ios-thumbs-down"
+          onPress={() => console.log("left")}
+          color="white"
+          backgroundColor="#FE0F00"
+        />
+        <IconButton
+          name="ios-thumbs-up"
+          onPress={() => console.log("right")}
+          color="white"
+          backgroundColor="#088001"
+        />
+      </View>
     </View>
   );
 }
@@ -59,16 +73,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  card: {
-    flex: 1,
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: "#E8E8E8",
-    justifyContent: "center",
-    backgroundColor: "white",
-  },
-  background: {
-    height: "100%",
-    resizeMode: "stretch",
+  buttonsContainer: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    marginTop: 570,
   },
 });
