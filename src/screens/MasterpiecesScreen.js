@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  FlatList,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -21,15 +14,17 @@ export default function MasterpiecesScreen() {
   });
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <Text style={styles.title}>Masterpieces</Text>
+      <Text style={styles.subTitle}>The Best Of The Best</Text>
       <FlatList
-        data={highestRatedArt.splice(0, 10)}
-        showsVerticalScrollIndicator={false}
+        horizontal={true}
+        data={highestRatedArt}
+        showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <View
             style={{
               flex: 1,
-              width: 350,
               flexDirection: "row",
               justifyContent: "center",
             }}
@@ -37,7 +32,9 @@ export default function MasterpiecesScreen() {
             {Object.values(item.data.likes).length > 0 && (
               <View
                 style={{
-                  marginTop: 60,
+                  marginLeft: 15,
+                  marginRight: 15,
+                  marginTop: 50,
                   shadowColor: "#333",
                   shadowOffset: {
                     width: 0,
@@ -86,18 +83,57 @@ export default function MasterpiecesScreen() {
           </View>
         )}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    backgroundColor: "#f6f6e9",
     flex: 1,
   },
   interactionContainer: {
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 3,
+  },
+  background: {
+    height: "220%",
+    opacity: 0.3,
+    position: "absolute",
+    resizeMode: "contain",
+    top: -700,
+    width: "250%",
+  },
+  title: {
+    color: "#333",
+    fontSize: 50,
+    fontWeight: "bold",
+    marginHorizontal: 30,
+    marginTop: 100,
+    shadowColor: "#333",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.3,
+    elevation: 2,
+  },
+  subTitle: {
+    color: "#333",
+    fontSize: 25,
+    fontWeight: "600",
+    marginHorizontal: 30,
+    marginTop: 10,
+    shadowColor: "#333",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.3,
+    elevation: 2,
   },
 });
