@@ -32,6 +32,8 @@ export default function HomeScreen(props) {
     firebase.auth().signOut();
   };
 
+  let count = 0;
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
@@ -41,12 +43,18 @@ export default function HomeScreen(props) {
         renderCard={(card) => <Card card={card} />}
         onSwipedRight={(card) => {
           dispatch(likeArt(otherUsersArt[card].id, displayName, uid));
+          count == card && count++;
         }}
         onSwipedLeft={(card) => {
           dispatch(dislikeArt(otherUsersArt[card].id, displayName, uid));
+          count == card && count++;
         }}
         onSwipedAll={() => {
           console.log("onSwipedAll");
+        }}
+        onTapCard={(card) => {
+          console.log(card);
+          console.log(count);
         }}
         cardIndex={0}
         backgroundColor={"#f6f6e9"}
@@ -59,7 +67,8 @@ export default function HomeScreen(props) {
           name="ios-thumbs-down"
           onPress={() => {
             swiperRef.current.swipeLeft();
-            dispatch(dislikeArt(otherUsersArt[0].id, displayName, uid));
+            dispatch(dislikeArt(otherUsersArt[count].id, displayName, uid));
+            count++;
           }}
           color="white"
           backgroundColor="#FE0F00"
@@ -69,7 +78,8 @@ export default function HomeScreen(props) {
           name="ios-thumbs-up"
           onPress={() => {
             swiperRef.current.swipeRight();
-            dispatch(likeArt(otherUsersArt[0].id, displayName, uid));
+            dispatch(likeArt(otherUsersArt[count].id, displayName, uid));
+            count++;
           }}
           color="white"
           backgroundColor="#088001"
