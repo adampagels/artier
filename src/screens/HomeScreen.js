@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, StatusBar } from "react-native";
+import { View, StyleSheet, Text, StatusBar } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllArt, likeArt, dislikeArt } from "./../redux/actions/art";
 import * as firebase from "firebase/app";
@@ -14,6 +14,8 @@ export default function HomeScreen(props) {
   const { uid, displayName } = firebase.auth().currentUser;
   const displayNameAndUid = displayName + uid;
 
+  const swiperRef = React.createRef();
+
   const otherUsersArt = art.filter(
     (art) =>
       art.data.likes[displayNameAndUid] !== displayName &&
@@ -26,13 +28,15 @@ export default function HomeScreen(props) {
     dispatch(fetchAllArt());
   }, []);
 
+  const logOutUser = () => {
+    firebase.auth().signOut();
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       <Swiper
-        ref={(swiper) => {
-          swiper = swiper;
-        }}
+        ref={swiperRef}
         cards={otherUsersArt}
         renderCard={(card) => <Card card={card} />}
         onSwipedRight={(card) => {
@@ -50,15 +54,23 @@ export default function HomeScreen(props) {
         verticalSwipe={false}
       ></Swiper>
       <View style={styles.buttonsContainer}>
+        <Text onPress={() => logOutUser()}>Logout</Text>
         <IconButton
           name="ios-thumbs-down"
-          onPress={() => console.log("left")}
+          onPress={() => {
+            swiperRef.current.swipeLeft();
+            dispatch(dislikeArt(otherUsersArt[0].id, displayName, uid));
+          }}
           color="white"
           backgroundColor="#FE0F00"
         />
+
         <IconButton
           name="ios-thumbs-up"
-          onPress={() => console.log("right")}
+          onPress={() => {
+            swiperRef.current.swipeRight();
+            dispatch(likeArt(otherUsersArt[0].id, displayName, uid));
+          }}
           color="white"
           backgroundColor="#088001"
         />
