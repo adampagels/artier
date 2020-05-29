@@ -8,6 +8,7 @@ export const SET_LOCATION = "SET_LOCATION";
 export const ADD_USER_LOCATION = "ADD_USER_LOCATION";
 export const REGISTER_USER = "REGISTER_USER";
 export const LOGIN_USER = "LOGIN_USER";
+export const SET_FIRST_TIME_USER = "SET_FIRST_TIME_USER";
 
 export const setUsername = (user) => {
   return {
@@ -63,5 +64,12 @@ export const loginUser = (email, password) => {
       .catch((error) => {
         console.log(error);
       });
+  };
+};
+
+export const setFirstTimeUser = (isFirstTimeUser) => {
+  return {
+    type: "SET_FIRST_TIME_USER",
+    payload: isFirstTimeUser,
   };
 };

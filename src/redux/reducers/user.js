@@ -4,12 +4,14 @@ import {
   SET_PASSWORD,
   REGISTER_USER,
   LOGIN_USER,
+  SET_FIRST_TIME_USER,
 } from "../actions/user";
 
 const initialState = {
   user: null,
   email: null,
   password: null,
+  isFirstTimeUser: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -20,6 +22,8 @@ const userReducer = (state = initialState, action) => {
       return { ...state, email: action.payload };
     case SET_PASSWORD:
       return { ...state, password: action.payload };
+    case SET_FIRST_TIME_USER:
+      return { ...state, isFirstTimeUser: action.payload };
     case REGISTER_USER:
       return state;
     case LOGIN_USER:
