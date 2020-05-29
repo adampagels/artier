@@ -51,7 +51,6 @@ export const dislikeArt = (artId, user, userId) => {
       .doc(artId)
       .update({
         ["dislikes." + user + userId]: user,
-        ["dislikes." + "uid" + userId]: userId,
       })
       .then(() => {
         dispatch({ type: "DISLIKE_ART" });
