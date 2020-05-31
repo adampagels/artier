@@ -7,7 +7,11 @@ import {
   TextInput,
   Image,
 } from "react-native";
-import { loginUser } from "./../redux/actions/user";
+import {
+  loginUser,
+  setFirstTimeUser,
+  setNewUserClosingModal,
+} from "./../redux/actions/user";
 import { useDispatch } from "react-redux";
 
 export default function LoginScreen(props) {
@@ -50,7 +54,11 @@ export default function LoginScreen(props) {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => dispatch(loginUser(userEmail, userPassword))}
+          onPress={() => {
+            dispatch(loginUser(userEmail, userPassword));
+            dispatch(setFirstTimeUser(false));
+            dispatch(setNewUserClosingModal(false));
+          }}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
