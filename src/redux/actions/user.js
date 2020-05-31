@@ -9,6 +9,7 @@ export const ADD_USER_LOCATION = "ADD_USER_LOCATION";
 export const REGISTER_USER = "REGISTER_USER";
 export const LOGIN_USER = "LOGIN_USER";
 export const SET_FIRST_TIME_USER = "SET_FIRST_TIME_USER";
+export const SET_NEW_USER_CLOSING_MODAL = "SET_NEW_USER_CLOSING_MODAL";
 
 export const setUsername = (user) => {
   return {
@@ -71,5 +72,12 @@ export const setFirstTimeUser = (isFirstTimeUser) => {
   return {
     type: "SET_FIRST_TIME_USER",
     payload: isFirstTimeUser,
+  };
+};
+
+export const setNewUserClosingModal = (isModalClosed) => {
+  return {
+    type: "SET_NEW_USER_CLOSING_MODAL",
+    payload: isModalClosed,
   };
 };

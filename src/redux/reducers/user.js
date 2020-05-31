@@ -5,6 +5,7 @@ import {
   REGISTER_USER,
   LOGIN_USER,
   SET_FIRST_TIME_USER,
+  SET_NEW_USER_CLOSING_MODAL,
 } from "../actions/user";
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   email: null,
   password: null,
   isFirstTimeUser: false,
+  isNewUserClosingModal: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -24,6 +26,8 @@ const userReducer = (state = initialState, action) => {
       return { ...state, password: action.payload };
     case SET_FIRST_TIME_USER:
       return { ...state, isFirstTimeUser: action.payload };
+    case SET_NEW_USER_CLOSING_MODAL:
+      return { ...state, isNewUserClosingModal: action.payload };
     case REGISTER_USER:
       return state;
     case LOGIN_USER:
