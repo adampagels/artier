@@ -14,6 +14,10 @@ import * as ImagePicker from "expo-image-picker";
 import "firebase/firestore";
 import * as firebase from "firebase/app";
 import { fetchAllArt, deleteArt } from "./../redux/actions/art";
+import {
+  setNewUserClosingModal,
+  setFirstTimeUser,
+} from "./../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 
@@ -23,6 +27,9 @@ export default function AddArtScreen() {
   const { uid } = firebase.auth().currentUser;
   const userArt = art.filter((art) => art.data.uid === uid);
   const { showActionSheetWithOptions } = useActionSheet();
+  const isFirstTimeUser = useSelector(
+    (state) => state.userReducer.isFirstTimeUser
+  );
   const userArtImages = [
     {
       uri: userArt[0] && userArt[0].data.image.uri,
@@ -51,7 +58,11 @@ export default function AddArtScreen() {
       .onSnapshot(() => {
         dispatch(fetchAllArt());
       });
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      isFirstTimeUser && dispatch(setNewUserClosingModal(true));
+      dispatch(setFirstTimeUser(false));
+    };
   }, []);
 
   const pickImage = async () => {
