@@ -6,6 +6,7 @@ import Navigation from "./src/navigation/Navigation";
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 import rootReducer from "./src/redux/reducers/index";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 
 //Fix "can't find variable: Crypto" error
 import { decode, encode } from "base-64";
@@ -30,7 +31,9 @@ export default function App() {
   const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
   return (
     <Provider store={store}>
-      <Navigation />
+      <ActionSheetProvider>
+        <Navigation />
+      </ActionSheetProvider>
     </Provider>
   );
 }
