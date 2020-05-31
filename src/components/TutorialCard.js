@@ -1,10 +1,14 @@
 import React from "react";
-import { View, StyleSheet, FlatList, Text } from "react-native";
+import { useSelector } from "react-redux";
+import { View, StyleSheet, FlatList } from "react-native";
 import VerticalTutorialCardLines from "./VerticalTutorialCardLines";
 import HorizontalTutorialCardLines from "./HorizontalTutorialCardLines";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import TutorialTextAndIcons from "./TutorialTextAndIcons";
 
 export default function TutorialCard() {
+  const isNewUserClosingModal = useSelector(
+    (state) => state.userReducer.isNewUserClosingModal
+  );
   const verticalLineData = [
     { key: "1" },
     { key: "2" },
@@ -50,159 +54,130 @@ export default function TutorialCard() {
 
   return (
     <View style={styles.card}>
-      <Text style={styles.dislikeTopText}>Don't like{"\n"}what you see?</Text>
-      <MaterialCommunityIcons
-        style={styles.swipeLeftIcon}
-        name="gesture-swipe-left"
-        size={70}
-        color="white"
-      />
-      <Text style={styles.dislikeBottomText}>Swipe left!</Text>
-      <Text style={styles.likeTopText}>Like what{"\n"}you see?</Text>
-      <MaterialCommunityIcons
-        style={styles.swipeRightIcon}
-        name="gesture-swipe-right"
-        size={70}
-        color="white"
-      />
-      <Text style={styles.likeBottomText}>Swipe right!</Text>
-      <Text style={styles.buttonsTopText}>Too lazy to swipe?</Text>
-      <Text style={styles.buttonsBottomDislikeText}>
-        Tap the{"\n"}thumbs down
-      </Text>
-      <Text style={styles.buttonsBottomLikeText}>Tap the{"\n"}thumbs up</Text>
-      <MaterialCommunityIcons
-        style={styles.dislikeArrow}
-        name="arrow-down-bold"
-        size={30}
-        color="white"
-      />
-      <MaterialCommunityIcons
-        style={styles.likeArrow}
-        name="arrow-down-bold"
-        size={30}
-        color="white"
-      />
-      <FlatList data={verticalLineData} renderItem={renderVerticalItem} />
-      <FlatList
-        horizontal={true}
-        data={horizontalLineData}
-        renderItem={renderHorizontalItem}
-      />
+      {isNewUserClosingModal && (
+        <>
+          <TutorialTextAndIcons styles={styles} />
+          <FlatList data={verticalLineData} renderItem={renderVerticalItem} />
+          <FlatList
+            horizontal={true}
+            data={horizontalLineData}
+            renderItem={renderHorizontalItem}
+          />
+        </>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
+    alignItems: "center",
     backgroundColor: "black",
-    opacity: 0.94,
     borderRadius: 5,
-    justifyContent: "center",
     height: 500,
-    width: 335,
+    justifyContent: "center",
+    opacity: 0.94,
+    position: "absolute",
     shadowColor: "#333",
     shadowOffset: {
-      width: 0,
       height: 2,
+      width: 0,
     },
-    shadowRadius: 6,
     shadowOpacity: 0.3,
-    elevation: 2,
-    position: "absolute",
+    shadowRadius: 6,
     top: 60,
-    alignItems: "center",
+    width: 335,
   },
   verticalRectangle: {
-    height: 20,
-    width: 6,
     backgroundColor: "white",
-    marginTop: 15,
     color: "white",
+    height: 20,
+    marginTop: 15,
+    width: 6,
   },
   horizontalRectangle: {
-    height: 6,
-    width: 20,
+    color: "white",
     backgroundColor: "white",
+    height: 6,
     marginBottom: 140,
     marginRight: 15,
-    color: "white",
+    width: 20,
   },
   dislikeTopText: {
-    position: "absolute",
     color: "white",
-    left: 20,
-    top: 70,
-    textAlign: "center",
     fontSize: 17,
+    position: "absolute",
+    right: 33,
+    textAlign: "center",
+    top: 70,
   },
   dislikeBottomText: {
-    position: "absolute",
     color: "white",
-    left: 33,
-    top: 240,
     fontSize: 17,
+    position: "absolute",
+    right: 45,
+    top: 240,
   },
   swipeLeftIcon: {
     position: "absolute",
-    left: 60,
+    right: 50,
     top: 135,
   },
   likeTopText: {
-    position: "absolute",
     color: "white",
-    right: 43,
-    top: 70,
-    textAlign: "center",
     fontSize: 17,
+    left: 47,
+    position: "absolute",
+    textAlign: "center",
+    top: 70,
   },
   likeBottomText: {
-    position: "absolute",
     color: "white",
-    right: 29,
-    top: 240,
     fontSize: 17,
+    left: 37,
+    position: "absolute",
+    top: 240,
   },
   swipeRightIcon: {
+    left: 60,
     position: "absolute",
-    right: 45,
     top: 135,
   },
   buttonsTopText: {
-    position: "absolute",
     color: "white",
-    right: 100,
-    bottom: 120,
     fontSize: 17,
+    position: "absolute",
+    right: -70,
+    top: 355,
   },
   buttonsBottomDislikeText: {
-    position: "absolute",
     color: "white",
-    right: 195,
-    bottom: 60,
     fontSize: 17,
+    position: "absolute",
+    right: 45,
+    top: 400,
     textAlign: "center",
   },
   buttonsBottomLikeText: {
-    position: "absolute",
     color: "white",
-    left: 215,
-    bottom: 60,
     fontSize: 17,
+    position: "absolute",
+    right: -137,
     textAlign: "center",
+    top: 400,
   },
   dislikeArrow: {
-    position: "absolute",
+    bottom: 20,
     color: "white",
     left: 250,
-    bottom: 20,
+    position: "absolute",
     textAlign: "center",
   },
   likeArrow: {
-    position: "absolute",
+    bottom: 20,
     color: "white",
     left: 50,
-    bottom: 20,
+    position: "absolute",
     textAlign: "center",
   },
 });
