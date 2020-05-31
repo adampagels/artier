@@ -2,15 +2,23 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, Text, StatusBar } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllArt, likeArt, dislikeArt } from "./../redux/actions/art";
+import { setNewUserClosingModal } from "./../redux/actions/user";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import Swiper from "react-native-deck-swiper";
 import Card from "../components/Card";
+import TutorialCard from "../components/TutorialCard";
 import IconButton from "../components/IconButton";
 
 export default function HomeScreen(props) {
   const dispatch = useDispatch();
   const art = useSelector((state) => state.artReducer.allArt);
+  const isNewUserClosingModal = useSelector(
+    (state) => state.userReducer.isNewUserClosingModal
+  );
+  const isFirstTimeUser = useSelector(
+    (state) => state.userReducer.isFirstTimeUser
+  );
   const { uid, displayName } = firebase.auth().currentUser;
   const displayNameAndUid = displayName + uid;
 
@@ -24,7 +32,7 @@ export default function HomeScreen(props) {
   );
 
   useEffect(() => {
-    props.navigation.navigate("addArtModal");
+    isFirstTimeUser && props.navigation.navigate("addArtModal");
     dispatch(fetchAllArt());
   }, []);
 
@@ -57,7 +65,7 @@ export default function HomeScreen(props) {
           console.log(count);
         }}
         cardIndex={0}
-        backgroundColor={"#f6f6e9"}
+        backgroundColor={"transparent"}
         stackSize={3}
         verticalSwipe={false}
       ></Swiper>
@@ -85,6 +93,7 @@ export default function HomeScreen(props) {
           backgroundColor="#088001"
         />
       </View>
+      {(isFirstTimeUser || isNewUserClosingModal) && <TutorialCard />}
     </View>
   );
 }
