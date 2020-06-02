@@ -149,12 +149,17 @@ export default function AddArtScreen() {
               imageStyle={{ borderRadius: 25 }}
             >
               {item.uri ? (
-                <Ionicons
-                  name="md-remove-circle"
-                  size={50}
-                  color="red"
+                <TouchableOpacity
                   onPress={() => dispatch(deleteArt(item.id))}
                   style={{
+                    position: "absolute",
+                    right: -10,
+                    bottom: -18,
+                    borderRadius: 50,
+                    backgroundColor: "#FE0F00",
+                    height: 50,
+                    width: 50,
+                    alignItems: "center",
                     shadowColor: "#E9446A",
                     shadowOffset: {
                       width: 0,
@@ -162,33 +167,32 @@ export default function AddArtScreen() {
                       shadowRadius: 10,
                       shadowOpacity: 0.4,
                     },
+                  }}
+                >
+                  <Ionicons name="ios-remove" size={50} color="#f6f6e9" />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => onActionPress()}
+                  style={{
                     position: "absolute",
                     right: -10,
                     bottom: -18,
-                    backgroundColor: "white",
+                    borderRadius: 50,
+                    backgroundColor: "#FE0F00",
+                    height: 50,
+                    width: 50,
+                    alignItems: "center",
+                    shadowColor: "#E9446A",
+                    shadowOffset: {
+                      width: 0,
+                      height: 0,
+                      shadowRadius: 10,
+                      shadowOpacity: 0.4,
+                    },
                   }}
-                />
-              ) : (
-                <TouchableOpacity>
-                  <Ionicons
-                    name="ios-add-circle"
-                    size={50}
-                    color="red"
-                    onPress={() => onActionPress()}
-                    style={{
-                      shadowColor: "#E9446A",
-                      shadowOffset: {
-                        width: 0,
-                        height: 0,
-                        shadowRadius: 10,
-                        shadowOpacity: 0.4,
-                      },
-                      position: "absolute",
-                      right: -10,
-                      bottom: -217,
-                      backgroundColor: "white",
-                    }}
-                  />
+                >
+                  <Ionicons name="ios-add" size={50} color="#f6f6e9" />
                 </TouchableOpacity>
               )}
             </ImageBackground>
