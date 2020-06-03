@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, Animated } from "react-native";
 import VerticalTutorialCardLines from "./VerticalTutorialCardLines";
 import HorizontalTutorialCardLines from "./HorizontalTutorialCardLines";
 import TutorialTextAndIcons from "./TutorialTextAndIcons";
 
 export default function TutorialCard() {
+  const [isCardFaded, setCardFaded] = useState(false);
   const isNewUserClosingModal = useSelector(
     (state) => state.userReducer.isNewUserClosingModal
   );
+  const fadeAnimation = new Animated.Value(1);
+
   const verticalLineData = [
     { key: "1" },
     { key: "2" },
@@ -52,20 +55,43 @@ export default function TutorialCard() {
     );
   };
 
+  isNewUserClosingModal &&
+    Animated.timing(fadeAnimation, {
+      toValue: 0,
+      delay: 12000,
+      duration: 1000,
+    }).start(() => {
+      setCardFaded(true);
+    });
+
   return (
-    <View style={styles.card}>
-      {isNewUserClosingModal && (
-        <>
-          <TutorialTextAndIcons styles={styles} />
-          <FlatList data={verticalLineData} renderItem={renderVerticalItem} />
-          <FlatList
-            horizontal={true}
-            data={horizontalLineData}
-            renderItem={renderHorizontalItem}
-          />
-        </>
+    <>
+      {!isCardFaded && (
+        <Animated.View
+          style={[
+            styles.card,
+            {
+              opacity: fadeAnimation,
+            },
+          ]}
+        >
+          {isNewUserClosingModal && (
+            <>
+              <TutorialTextAndIcons styles={styles} />
+              <FlatList
+                data={verticalLineData}
+                renderItem={renderVerticalItem}
+              />
+              <FlatList
+                horizontal={true}
+                data={horizontalLineData}
+                renderItem={renderHorizontalItem}
+              />
+            </>
+          )}
+        </Animated.View>
       )}
-    </View>
+    </>
   );
 }
 
