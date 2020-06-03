@@ -22,7 +22,7 @@ const AppContainer = createStackNavigator(
           screen: HomeScreen,
           navigationOptions: {
             tabBarIcon: ({ tintColor }) => (
-              <Ionicons name="ios-home" size={24} color={tintColor} />
+              <Ionicons name="ios-home" size={30} color={tintColor} />
             ),
           },
         },
@@ -30,7 +30,7 @@ const AppContainer = createStackNavigator(
           screen: NotificationScreen,
           navigationOptions: {
             tabBarIcon: ({ tintColor }) => (
-              <Ionicons name="ios-notifications" size={24} color={tintColor} />
+              <Ionicons name="ios-notifications" size={30} color={tintColor} />
             ),
           },
         },
@@ -38,7 +38,7 @@ const AppContainer = createStackNavigator(
           screen: MasterpiecesScreen,
           navigationOptions: {
             tabBarIcon: ({ tintColor }) => (
-              <Ionicons name="md-medal" size={24} color={tintColor} />
+              <Ionicons name="md-medal" size={30} color={tintColor} />
             ),
           },
         },
@@ -46,7 +46,7 @@ const AppContainer = createStackNavigator(
           screen: ProfileScreen,
           navigationOptions: {
             tabBarIcon: ({ tintColor }) => (
-              <Ionicons name="ios-person" size={24} color={tintColor} />
+              <Ionicons name="ios-person" size={30} color={tintColor} />
             ),
           },
         },
@@ -55,7 +55,22 @@ const AppContainer = createStackNavigator(
         tabBarOptions: {
           activeTintColor: "#161F3D",
           inactiveTintColor: "#B8BBC4",
-          showLabel: true,
+          showLabel: false,
+          style: {
+            borderRadius: 30,
+            backgroundColor: "#fefefe",
+            borderTopWidth: 0,
+            shadowColor: "transparent",
+            position: "absolute",
+            bottom: 0,
+            shadowColor: "#333",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowRadius: 6,
+            shadowOpacity: 0.3,
+          },
         },
       }
     ),
