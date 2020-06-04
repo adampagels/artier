@@ -93,11 +93,13 @@ export default function HomeScreen(props) {
           </View>
         </>
       ) : (
-        <EmptyState
-          lineOne={"You've Reached"}
-          lineTwo={"The End"}
-          lineThree={"For Now..."}
-        />
+        <View style={{ marginTop: 180 }}>
+          <EmptyState
+            lineOne={"You've Reached"}
+            lineTwo={"The End"}
+            lineThree={"For Now..."}
+          />
+        </View>
       )}
       {(isFirstTimeUser || isNewUserClosingModal) && <TutorialCard />}
     </View>
