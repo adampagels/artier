@@ -1,89 +1,80 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  SafeAreaView,
-  Image,
-} from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { useSelector } from "react-redux";
-import { AppLoading } from "expo";
-import { Asset } from "expo-asset";
+import * as firebase from "firebase/app";
+import EmptyState from "../components/EmptyState";
 
 export default function NotificationScreen() {
-  const art = useSelector((state) => state.artReducer.userArt);
-  const [isReady, setReady] = useState(false);
-
-  const _cacheResourcesAsync = async () => {
-    const images = [require("../assets/notificationBG.jpg")];
-
-    const cacheImages = images.map((image) => {
-      return Asset.fromModule(image).downloadAsync();
-    });
-    return Promise.all(cacheImages);
-  };
+  const art = useSelector((state) => state.artReducer.allArt);
+  const { uid } = firebase.auth().currentUser;
+  const userArt = art.filter((art) => art.data.uid === uid);
 
   return (
-    <SafeAreaView style={styles.container}>
-      {isReady === false ? (
-        <AppLoading
-          startAsync={_cacheResourcesAsync}
-          onFinish={() => setReady(true)}
-          onError={console.warn}
+    <View style={styles.container}>
+      <Text style={styles.title}>Notifications</Text>
+
+      {userArt.length > 0 ? (
+        <FlatList
+          data={userArt}
+          scrollEnabled={false}
+          renderItem={({ item }) => (
+            <View>
+              {Object.values(item.data.likes).length > 0 && (
+                <View style={styles.notificationsContainer}>
+                  <View style={styles.likedUsersContainer}>
+                    <Text style={styles.likedUsers}>
+                      {Object.values(item.data.likes).length > 2
+                        ? Object.values(item.data.likes)[0] +
+                          " & " +
+                          (Object.values(item.data.likes).length - 1) +
+                          " others liked your art."
+                        : Object.values(item.data.likes)
+                            .toString()
+                            .replace(/,/g, " and ") + " liked your art."}
+                    </Text>
+                  </View>
+                  <View style={{ alignContent: "flex-end" }}>
+                    <Image
+                      source={{ uri: item.data.image.uri }}
+                      style={styles.artwork}
+                    ></Image>
+                  </View>
+                </View>
+              )}
+            </View>
+          )}
         />
       ) : (
-        <Image
-          source={require("../assets/notificationBG.jpg")}
-          style={styles.background}
+        <EmptyState
+          lineOne={"Oops!"}
+          lineTwo={"Nothing Here"}
+          lineThree={"Yet..."}
         />
       )}
-      <Text style={styles.title}>Notifications</Text>
-      <FlatList
-        data={art}
-        scrollEnabled={false}
-        renderItem={({ item }) => (
-          <View>
-            {Object.values(item.data.likes).length > 0 && (
-              <View style={styles.notificationsContainer}>
-                <View style={styles.likedUsersContainer}>
-                  <Text style={styles.likedUsers}>
-                    {Object.values(item.data.likes).length > 2
-                      ? Object.values(item.data.likes)[0] +
-                        " & " +
-                        (Object.values(item.data.likes).length - 1) +
-                        " others liked your art."
-                      : Object.values(item.data.likes)
-                          .toString()
-                          .replace(/,/g, " and ") + " liked your art."}
-                  </Text>
-                </View>
-                <View style={{ alignContent: "flex-end" }}>
-                  <Image
-                    source={{ uri: item.data.image.uri }}
-                    style={styles.artwork}
-                    imageStyle={{ borderRadius: 100 }}
-                  ></Image>
-                </View>
-              </View>
-            )}
-          </View>
-        )}
-      />
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    backgroundColor: "#fefefe",
     flex: 1,
     justifyContent: "center",
   },
   notificationsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 40,
+    marginTop: 20,
+    shadowColor: "#333",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.3,
+    elevation: 2,
+    marginBottom: 30,
   },
   likedUsersContainer: {
     marginRight: 50,
@@ -96,20 +87,22 @@ const styles = StyleSheet.create({
   artwork: {
     height: 80,
     width: 80,
+    borderRadius: 5,
   },
   title: {
     color: "#333",
     fontSize: 52,
     fontWeight: "bold",
     marginHorizontal: 30,
-    marginTop: 60,
-  },
-  background: {
-    height: "220%",
-    opacity: 0.3,
-    position: "absolute",
-    resizeMode: "contain",
-    top: -700,
-    width: "250%",
+    marginTop: 100,
+    marginBottom: 20,
+    shadowColor: "#333",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.3,
+    elevation: 2,
   },
 });

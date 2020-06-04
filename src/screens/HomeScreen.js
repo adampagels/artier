@@ -1,16 +1,17 @@
-import React, { useEffect } from "react";
-import { View, StyleSheet, Text, StatusBar } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, StatusBar } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllArt, likeArt, dislikeArt } from "./../redux/actions/art";
-import { setNewUserClosingModal } from "./../redux/actions/user";
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import Swiper from "react-native-deck-swiper";
 import Card from "../components/Card";
 import TutorialCard from "../components/TutorialCard";
 import IconButton from "../components/IconButton";
+import EmptyState from "../components/EmptyState";
 
 export default function HomeScreen(props) {
+  const [isEndofCards, setEndOfCards] = useState(false);
   const dispatch = useDispatch();
   const art = useSelector((state) => state.artReducer.allArt);
   const isNewUserClosingModal = useSelector(
@@ -36,63 +37,68 @@ export default function HomeScreen(props) {
     dispatch(fetchAllArt());
   }, []);
 
-  const logOutUser = () => {
-    firebase.auth().signOut();
-  };
-
   let count = 0;
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <Swiper
-        ref={swiperRef}
-        cards={otherUsersArt}
-        renderCard={(card) => <Card card={card} />}
-        onSwipedRight={(card) => {
-          dispatch(likeArt(otherUsersArt[card].id, displayName, uid));
-          count == card && count++;
-        }}
-        onSwipedLeft={(card) => {
-          dispatch(dislikeArt(otherUsersArt[card].id, displayName, uid));
-          count == card && count++;
-        }}
-        onSwipedAll={() => {
-          console.log("onSwipedAll");
-        }}
-        onTapCard={(card) => {
-          console.log(card);
-          console.log(count);
-        }}
-        cardIndex={0}
-        backgroundColor={"transparent"}
-        stackSize={3}
-        verticalSwipe={false}
-      ></Swiper>
-      <View style={styles.buttonsContainer}>
-        <Text onPress={() => logOutUser()}>Logout</Text>
-        <IconButton
-          name="ios-thumbs-down"
-          onPress={() => {
-            swiperRef.current.swipeLeft();
-            dispatch(dislikeArt(otherUsersArt[count].id, displayName, uid));
-            count++;
-          }}
-          color="white"
-          backgroundColor="#FE0F00"
-        />
+      {!isEndofCards ? (
+        <>
+          <Swiper
+            ref={swiperRef}
+            cards={otherUsersArt}
+            renderCard={(card) => <Card card={card} />}
+            onSwipedRight={(card) => {
+              dispatch(likeArt(otherUsersArt[card].id, displayName, uid));
+              count == card && count++;
+            }}
+            onSwipedLeft={(card) => {
+              dispatch(dislikeArt(otherUsersArt[card].id, displayName, uid));
+              count == card && count++;
+            }}
+            onSwipedAll={() => {
+              setEndOfCards(true);
+            }}
+            onTapCard={(card) => {
+              console.log(card);
+              console.log(count);
+            }}
+            cardIndex={0}
+            backgroundColor={"#fefefe"}
+            stackSize={3}
+            verticalSwipe={false}
+          ></Swiper>
+          <View style={styles.buttonsContainer}>
+            <IconButton
+              name="ios-thumbs-down"
+              onPress={() => {
+                swiperRef.current.swipeLeft();
+                dispatch(dislikeArt(otherUsersArt[count].id, displayName, uid));
+                count++;
+              }}
+              color="white"
+              backgroundColor="#FE0F00"
+            />
 
-        <IconButton
-          name="ios-thumbs-up"
-          onPress={() => {
-            swiperRef.current.swipeRight();
-            dispatch(likeArt(otherUsersArt[count].id, displayName, uid));
-            count++;
-          }}
-          color="white"
-          backgroundColor="#088001"
+            <IconButton
+              name="ios-thumbs-up"
+              onPress={() => {
+                swiperRef.current.swipeRight();
+                dispatch(likeArt(otherUsersArt[count].id, displayName, uid));
+                count++;
+              }}
+              color="white"
+              backgroundColor="#088001"
+            />
+          </View>
+        </>
+      ) : (
+        <EmptyState
+          lineOne={"You've Reached"}
+          lineTwo={"The End"}
+          lineThree={"For Now..."}
         />
-      </View>
+      )}
       {(isFirstTimeUser || isNewUserClosingModal) && <TutorialCard />}
     </View>
   );
@@ -108,6 +114,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-    marginTop: 570,
+    marginTop: 480,
   },
 });
