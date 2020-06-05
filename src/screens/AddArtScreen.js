@@ -132,11 +132,11 @@ export default function AddArtScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Add Art</Text>
+      <Text style={styles.title}>Add Photos</Text>
       <FlatList
         contentContainerStyle={{
           flexDirection: "column",
-          marginTop: 180,
+          marginTop: 80,
         }}
         scrollEnabled={false}
         numColumns={2}
@@ -220,5 +220,20 @@ const styles = StyleSheet.create({
     height: 200,
     margin: 10,
     borderRadius: 30,
+  },
+  title: {
+    color: "#333",
+    fontSize: 37,
+    fontWeight: "bold",
+    marginHorizontal: 30,
+    marginTop: 70,
+    shadowColor: "#333",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.3,
+    elevation: 2,
   },
 });
