@@ -9,16 +9,20 @@ export default function NotificationScreen() {
   const { uid } = firebase.auth().currentUser;
   const userArt = art.filter((art) => art.data.uid === uid);
 
+  const likedPosts = userArt.filter(
+    (art) => Object.values(art.data.likes).length
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Notifications</Text>
-
-      {userArt.length > 0 ? (
+      {likedPosts.length > 0 ? (
         <FlatList
           data={userArt}
           scrollEnabled={false}
           renderItem={({ item }) => (
             <View>
+              {console.log(Object.values(item.data.likes).length)}
               {Object.values(item.data.likes).length > 0 && (
                 <View style={styles.notificationsContainer}>
                   <View style={styles.likedUsersContainer}>
