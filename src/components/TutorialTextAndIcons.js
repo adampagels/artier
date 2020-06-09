@@ -12,6 +12,13 @@ export default function TutorialTextAndIcons(props) {
   const buttonsTopTextFade = new Animated.Value(0);
   const buttonsDislikeTextFade = new Animated.Value(0);
   const buttonsLikeTextFade = new Animated.Value(0);
+  const iconsFade = new Animated.Value(0);
+
+  Animated.timing(iconsFade, {
+    toValue: 1,
+    delay: 500,
+    duration: 800,
+  }).start();
 
   Animated.timing(dislikeTopTextFade, {
     toValue: 1,
@@ -115,12 +122,20 @@ export default function TutorialTextAndIcons(props) {
           },
         ]}
       >
-        <MaterialCommunityIcons
-          style={props.styles.swipeLeftIcon}
-          name="gesture-swipe-left"
-          size={70}
-          color="white"
-        />
+        <Animated.View
+          style={[
+            {
+              opacity: iconsFade,
+            },
+          ]}
+        >
+          <MaterialCommunityIcons
+            style={props.styles.swipeLeftIcon}
+            name="gesture-swipe-left"
+            size={70}
+            color="white"
+          />
+        </Animated.View>
       </Animated.View>
       <Animated.View
         style={[
@@ -147,12 +162,20 @@ export default function TutorialTextAndIcons(props) {
           },
         ]}
       >
-        <MaterialCommunityIcons
-          style={props.styles.swipeRightIcon}
-          name="gesture-swipe-right"
-          size={70}
-          color="white"
-        />
+        <Animated.View
+          style={[
+            {
+              opacity: iconsFade,
+            },
+          ]}
+        >
+          <MaterialCommunityIcons
+            style={props.styles.swipeRightIcon}
+            name="gesture-swipe-right"
+            size={70}
+            color="white"
+          />
+        </Animated.View>
       </Animated.View>
       <Animated.View
         style={[
@@ -194,6 +217,7 @@ export default function TutorialTextAndIcons(props) {
           Tap the{"\n"}thumbs up
         </Text>
       </Animated.View>
+
       <MaterialCommunityIcons
         style={props.styles.dislikeArrow}
         name="arrow-down-bold"
