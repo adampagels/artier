@@ -13,11 +13,15 @@ import {
   setNewUserClosingModal,
 } from "./../redux/actions/user";
 import { useDispatch } from "react-redux";
+import { useFonts, Roboto_700Bold } from "@expo-google-fonts/dev";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function LoginScreen(props) {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-
+  const [fontsLoaded] = useFonts({
+    Roboto_700Bold,
+  });
   const dispatch = useDispatch();
 
   const navigateToNameScreen = () => {
@@ -31,9 +35,9 @@ export default function LoginScreen(props) {
         style={styles.background}
       />
       <View>
-        <Text style={styles.loginTitle}>ARTiER</Text>
+        {fontsLoaded && <Text style={styles.loginTitle}>ARTiER</Text>}
         <View style={styles.form}>
-          <View>
+          <View style={styles.searchSection}>
             <TextInput
               style={styles.input}
               autoCapitalize="none"
@@ -41,13 +45,26 @@ export default function LoginScreen(props) {
               value={userEmail}
               autoCorrect={false}
             ></TextInput>
+            <MaterialIcons
+              name="email"
+              size={24}
+              color="#8A8F9E"
+              style={styles.emailIcon}
+            />
             <TextInput
               style={styles.input}
+              secureTextEntry
               autoCapitalize="none"
               onChangeText={(userPassword) => setUserPassword(userPassword)}
               value={userPassword}
               autoCorrect={false}
             ></TextInput>
+            <MaterialCommunityIcons
+              name="lock"
+              size={26}
+              color="#8A8F9E"
+              style={styles.passwordIcon}
+            />
           </View>
         </View>
       </View>
@@ -86,6 +103,7 @@ const styles = StyleSheet.create({
   },
   loginTitle: {
     color: "#f6f6e9",
+    fontFamily: "Roboto_700Bold",
     fontSize: 60,
     marginTop: 60,
     alignSelf: "center",
@@ -95,7 +113,7 @@ const styles = StyleSheet.create({
   form: {
     marginBottom: 40,
     marginHorizontal: 30,
-    marginTop: 80,
+    marginTop: 120,
   },
   input: {
     backgroundColor: "#f6f6e9",
@@ -104,7 +122,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     height: 40,
     marginTop: 20,
-    paddingLeft: 10,
+    paddingLeft: 45,
     shadowColor: "#333",
     shadowOpacity: 0.5,
     shadowRadius: 3,
@@ -112,6 +130,21 @@ const styles = StyleSheet.create({
       height: 0,
       width: 0,
     },
+  },
+  searchSection: {
+    justifyContent: "center",
+  },
+  emailIcon: {
+    position: "absolute",
+    top: 28,
+    left: 8,
+    opacity: 0.5,
+  },
+  passwordIcon: {
+    position: "absolute",
+    top: 87,
+    left: 7,
+    opacity: 0.5,
   },
   buttonContainer: {
     flexDirection: "row",
