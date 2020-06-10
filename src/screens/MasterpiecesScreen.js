@@ -2,9 +2,13 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/dev";
 
 export default function MasterpiecesScreen() {
   const art = useSelector((state) => state.artReducer.allArt);
+  const [fontsLoaded] = useFonts({
+    NotoSansJP_700Bold,
+  });
 
   const highestRatedArt = art.sort((artwork1, artwork2) => {
     return (
@@ -15,8 +19,7 @@ export default function MasterpiecesScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Masterpieces</Text>
-      <Text style={styles.subTitle}>The Best Of The Best</Text>
+      {fontsLoaded && <Text style={styles.title}>Masterpieces</Text>}
       <FlatList
         horizontal={true}
         data={highestRatedArt}
@@ -47,7 +50,7 @@ export default function MasterpiecesScreen() {
               >
                 <Image
                   source={{ uri: item.data.image.uri }}
-                  style={{ height: 400, width: 300 }}
+                  style={{ height: 400, width: 300, borderRadius: 5 }}
                 ></Image>
                 <View style={styles.interactionContainer}>
                   <Ionicons name="ios-thumbs-up" size={40} color={"#088001"} />
@@ -90,7 +93,7 @@ export default function MasterpiecesScreen() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "#f6f6e9",
+    backgroundColor: "#fefefe",
     flex: 1,
   },
   interactionContainer: {
@@ -108,7 +111,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#333",
-    fontSize: 50,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 48,
     fontWeight: "bold",
     marginHorizontal: 30,
     marginTop: 100,

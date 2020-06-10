@@ -20,6 +20,7 @@ import {
 } from "./../redux/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 import { useActionSheet } from "@expo/react-native-action-sheet";
+import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/dev";
 
 export default function AddArtScreen() {
   const dispatch = useDispatch();
@@ -27,6 +28,9 @@ export default function AddArtScreen() {
   const { uid } = firebase.auth().currentUser;
   const userArt = art.filter((art) => art.data.uid === uid);
   const { showActionSheetWithOptions } = useActionSheet();
+  const [fontsLoaded] = useFonts({
+    NotoSansJP_700Bold,
+  });
   const isFirstTimeUser = useSelector(
     (state) => state.userReducer.isFirstTimeUser
   );
@@ -132,7 +136,7 @@ export default function AddArtScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Add Photos</Text>
+      {fontsLoaded && <Text style={styles.title}>Add Photos</Text>}
       <FlatList
         contentContainerStyle={{
           flexDirection: "column",
@@ -223,6 +227,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#333",
+    fontFamily: "NotoSansJP_700Bold",
     fontSize: 37,
     fontWeight: "bold",
     marginHorizontal: 30,

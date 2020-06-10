@@ -3,11 +3,15 @@ import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { useSelector } from "react-redux";
 import * as firebase from "firebase/app";
 import EmptyState from "../components/EmptyState";
+import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/dev";
 
 export default function NotificationScreen() {
   const art = useSelector((state) => state.artReducer.allArt);
   const { uid } = firebase.auth().currentUser;
   const userArt = art.filter((art) => art.data.uid === uid);
+  const [fontsLoaded] = useFonts({
+    NotoSansJP_700Bold,
+  });
 
   const likedPosts = userArt.filter(
     (art) => Object.values(art.data.likes).length
@@ -15,7 +19,7 @@ export default function NotificationScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Notifications</Text>
+      {fontsLoaded && <Text style={styles.title}>Notifications</Text>}
       {likedPosts.length > 0 ? (
         <FlatList
           data={userArt}
@@ -95,7 +99,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#333",
-    fontSize: 52,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 49,
     fontWeight: "bold",
     marginHorizontal: 30,
     marginTop: 100,

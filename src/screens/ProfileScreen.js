@@ -11,11 +11,15 @@ import * as firebase from "firebase/app";
 import { Ionicons } from "@expo/vector-icons";
 import ProfileHeaderButtons from "../components/ProfileHeaderButtons";
 import EmptyState from "../components/EmptyState";
+import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/dev";
 
 export default function ProfileScreen(props) {
   const art = useSelector((state) => state.artReducer.allArt);
   const { uid, displayName } = firebase.auth().currentUser;
   const userArt = art.filter((art) => art.data.uid === uid);
+  const [fontsLoaded] = useFonts({
+    NotoSansJP_700Bold,
+  });
 
   const navigateToAddArtScreen = () => {
     props.navigation.navigate("addArtModal");
@@ -24,13 +28,13 @@ export default function ProfileScreen(props) {
   return (
     <View style={styles.container}>
       <ProfileHeaderButtons onPress={navigateToAddArtScreen} />
-      <Text style={styles.title}>Hi, {displayName}</Text>
+      {fontsLoaded && <Text style={styles.title}>Hi, {displayName}</Text>}
       {userArt.length > 0 ? (
         <>
           <FlatList
             contentContainerStyle={{
               flexDirection: "column",
-              marginTop: 30,
+              marginTop: 10,
             }}
             scrollEnabled={false}
             numColumns={2}
@@ -109,6 +113,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#333",
+    fontFamily: "NotoSansJP_700Bold",
     fontSize: 52,
     fontWeight: "bold",
     marginHorizontal: 30,
