@@ -8,18 +8,27 @@ import {
   Image,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { setPassword, registerUser } from "./../redux/actions/user";
+import {
+  setPassword,
+  registerUser,
+  setFirstTimeUser,
+} from "./../redux/actions/user";
 import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
+import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/dev";
 
-export default function PasswordScreen(props) {
+export default function PasswordScreen() {
   const [userPassword, setUserPassword] = useState("");
   const [isReady, setReady] = useState(false);
+  const [fontsLoaded] = useFonts({
+    NotoSansJP_700Bold,
+  });
   const dispatch = useDispatch();
 
   const setPasswordAndRegister = () => {
     dispatch(setPassword(userPassword));
     dispatch(registerUser());
+    dispatch(setFirstTimeUser(true));
   };
 
   const _cacheResourcesAsync = async () => {
@@ -80,7 +89,8 @@ const styles = StyleSheet.create({
   },
   loginTitle: {
     color: "#f6f6e9",
-    fontSize: 60,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 54,
     marginTop: 60,
     alignSelf: "flex-start",
     borderTopWidth: 3,
@@ -90,7 +100,7 @@ const styles = StyleSheet.create({
   form: {
     marginBottom: 40,
     marginHorizontal: 30,
-    marginTop: 80,
+    marginTop: 98,
   },
   input: {
     backgroundColor: "#f6f6e9",

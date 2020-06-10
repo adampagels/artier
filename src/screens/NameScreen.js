@@ -11,10 +11,14 @@ import { useDispatch } from "react-redux";
 import { setUsername } from "./../redux/actions/user";
 import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
+import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/dev";
 
 export default function NameScreen(props) {
   const [name, setName] = useState("");
   const [isReady, setReady] = useState(false);
+  const [fontsLoaded] = useFonts({
+    NotoSansJP_700Bold,
+  });
   const dispatch = useDispatch();
 
   const navigateToEmailScreen = () => {
@@ -45,7 +49,9 @@ export default function NameScreen(props) {
           style={styles.background}
         />
       )}
-      <Text style={styles.loginTitle}>My first{"\n"}name is</Text>
+      {fontsLoaded && (
+        <Text style={styles.loginTitle}>My first{"\n"}name is</Text>
+      )}
       <View style={styles.form}>
         <View>
           <TextInput
@@ -77,6 +83,7 @@ const styles = StyleSheet.create({
   },
   loginTitle: {
     color: "#f6f6e9",
+    fontFamily: "NotoSansJP_700Bold",
     fontSize: 60,
     marginTop: 60,
     alignSelf: "flex-start",
