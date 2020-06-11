@@ -44,6 +44,7 @@ export default function LoginScreen(props) {
               onChangeText={(userEmail) => setUserEmail(userEmail)}
               value={userEmail}
               autoCorrect={false}
+              placeholder={"Email Address"}
             ></TextInput>
             <MaterialIcons
               name="email"
@@ -58,6 +59,7 @@ export default function LoginScreen(props) {
               onChangeText={(userPassword) => setUserPassword(userPassword)}
               value={userPassword}
               autoCorrect={false}
+              placeholder={"Password"}
             ></TextInput>
             <MaterialCommunityIcons
               name="lock"

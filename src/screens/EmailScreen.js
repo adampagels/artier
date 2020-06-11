@@ -58,6 +58,7 @@ export default function EmailScreen(props) {
             onChangeText={(userEmail) => setUserEmail(userEmail)}
             value={userEmail}
             autoCorrect={false}
+            placeholder={"Email Address"}
           ></TextInput>
         </View>
       </View>

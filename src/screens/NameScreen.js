@@ -60,6 +60,7 @@ export default function NameScreen(props) {
             onChangeText={(name) => setName(name)}
             value={name}
             autoCorrect={false}
+            placeholder={"First Name"}
           ></TextInput>
         </View>
       </View>

@@ -54,7 +54,9 @@ export default function PasswordScreen() {
           style={styles.background}
         />
       )}
-      <Text style={styles.loginTitle}>My{"\n"}password is</Text>
+      {fontsLoaded && (
+        <Text style={styles.loginTitle}>My{"\n"}password is</Text>
+      )}
       <View style={styles.form}>
         <View>
           <TextInput
@@ -63,6 +65,7 @@ export default function PasswordScreen() {
             onChangeText={(userPassword) => setUserPassword(userPassword)}
             value={userPassword}
             autoCorrect={false}
+            placeholder={"Password"}
           ></TextInput>
         </View>
       </View>
