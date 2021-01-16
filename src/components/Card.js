@@ -14,14 +14,20 @@ export default function Card(props) {
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
     borderRadius: 5,
-    borderWidth: 2,
-    borderColor: "#E8E8E8",
     justifyContent: "center",
-    backgroundColor: "white",
+    height: 500,
+    shadowColor: "#333",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.3,
+    elevation: 2,
   },
   background: {
+    borderRadius: 5,
     height: "100%",
     resizeMode: "stretch",
   },
