@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
+import * as firebase from "firebase/app";
 
 export default function ProfileHeaderButtons(props) {
   const logOutUser = () => {
