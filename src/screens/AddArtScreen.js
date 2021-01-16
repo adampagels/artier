@@ -145,6 +145,7 @@ export default function AddArtScreen() {
         scrollEnabled={false}
         numColumns={2}
         data={userArtImages}
+        keyExtractor={(item, index) => String(index)}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
             <ImageBackground
