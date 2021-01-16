@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   likeBottomText: {
     color: "white",
     fontSize: 17,
-    left: 37,
+    left: 45,
     position: "absolute",
     top: 240,
   },
